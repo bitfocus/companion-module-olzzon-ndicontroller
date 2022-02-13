@@ -10,7 +10,7 @@
 - Source selected status
 
 **Example :**
-In the repo there's an examplefile "Olzzon-NDI-example.companionconfig" that you can import into your companio.
+In the repo, there's an example file, "Olzzon-NDI-example.companionconfig" that you can import into your companion.
 
 Basically you need to add following to a button:
 * Action (to set cross points) - source and target
