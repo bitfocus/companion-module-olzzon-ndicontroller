@@ -1,0 +1,42 @@
+{
+	"name": "olzzon-ndicontroller",
+	"version": "1.0.0",
+	"description": "Companion module for Olzzon NDI Controller",
+	"main": "./dist/index.js",
+	"author": "Olzzon (Kasper Olsson Hans",
+	"license": "MIT",
+	"manufacturer": "Olzzon",
+	"product": "NDI Controller",
+	"shortname": "ndi-controller",
+	"keywords": [
+		"Generic"
+	],
+	"scripts": {
+		"build:main": "tsc -p tsconfig.build.json",
+		"build:watch": "tsc -p tsconfig.build.json --watch",
+		"license-validate": "yarn sofie-licensecheck",
+		"postinstall": "yarn build"
+	},
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"lint-staged": {
+		"*.{css,json,md,scss}": [
+			"prettier --write"
+		],
+		"*.{ts,tsx,js,jsx}": [
+			"yarn lint:raw --fix"
+		]
+	},
+	"engines": {
+		"node": "^14 || ^16"
+	},
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "^1.1.0",
+		"@types/node": "^14.18.3",
+		"@types/ws": "^7.4.7",
+		"typescript": "~4.2"
+	},
+	"dependencies": {
+		"axios": "^0.25.0",
+		"type-fest": "^2.11.2"
+	}
+}

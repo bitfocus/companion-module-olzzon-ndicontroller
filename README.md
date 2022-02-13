@@ -1,2 +1,2 @@
-# companion-module-[replace with module name]
+# companion-module-olzzon-ndicontroller
 See [HELP.md](./HELP.md) and [LICENSE](./LICENSE)
