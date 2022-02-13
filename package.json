@@ -1,15 +1,16 @@
 {
 	"name": "olzzon-ndicontroller",
 	"version": "1.0.0",
+	"api_version": "1.0.0",
 	"description": "Companion module for Olzzon NDI Controller",
 	"main": "./dist/index.js",
-	"author": "Olzzon (Kasper Olsson Hans",
+	"author": "Olzzon (Kasper Olsson Hans)",
 	"license": "MIT",
 	"manufacturer": "Olzzon",
 	"product": "NDI Controller",
 	"shortname": "ndi-controller",
 	"keywords": [
-		"Generic"
+		"ndi"
 	],
 	"scripts": {
 		"build:main": "tsc -p tsconfig.build.json",
@@ -38,5 +39,13 @@
 	"dependencies": {
 		"axios": "^0.25.0",
 		"type-fest": "^2.11.2"
+	},
+	"homepage": "https://github.com/bitfocus/companion-module-olzzon-ndicontroller#readme",
+	"bugs": {
+		"url": "https://github.com/bitfocus/companion-module-olzzon-ndicontroller/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-olzzon-ndicontroller.git"
 	}
 }
