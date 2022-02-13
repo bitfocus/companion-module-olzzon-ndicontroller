@@ -12,7 +12,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			id: 'url',
 			label: 'NDI Controller IP',
 			width: 6,
-			default: '127.0.0.1'
+			default: '127.0.0.1',
 		},
 		{
 			type: 'number',
@@ -23,6 +23,6 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			default: 5901,
 			required: true,
 			width: 4,
-		}
+		},
 	]
 }

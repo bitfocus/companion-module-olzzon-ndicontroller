@@ -6,23 +6,23 @@ import { FeedbackId } from '../Companion/feedback'
 import { CompanionVariable } from '../../../../instance_skel_types'
 
 const POLL_SPEED = 300
-let NDIurl: string = ''
-let NDIport: number = 0
+let NDIurl = ''
+let NDIport = 0
 
 export let NDIState: INdiState
 
 export const initializeNdiControllerWatcher = async (instance: InstanceSkel<DeviceConfig>): Promise<IConnection> => {
-	let connection: IConnection = { status: instance.STATUS_UNKNOWN }
+	const connection: IConnection = { status: instance.STATUS_UNKNOWN }
 	NDIurl = instance.config.url || 'localhost'
 	NDIport = instance.config.port || 5901
 
-	instance.log('info', `Fetching data from NDI Controller at : http://${NDIurl}:${NDIport}/state` )
+	instance.log('info', `Fetching data from NDI Controller at : http://${NDIurl}:${NDIport}/state`)
 	await axios
 		.get(`http://${NDIurl}:${NDIport}/state`)
 		.then((response): void => {
-			let variables: CompanionVariable[] = []
+			const variables: CompanionVariable[] = []
 			NDIState = response.data as INdiState
-			for(let index: number = 0; index < NDIState.sources.length; index++) {
+			for (let index = 0; index < NDIState.sources.length; index++) {
 				variables.push({ name: `source${index + 1}`, label: 'NDI Controller Source Label' })
 			}
 			instance.setVariableDefinitions(variables)
@@ -38,7 +38,7 @@ export const initializeNdiControllerWatcher = async (instance: InstanceSkel<Devi
 	return connection
 }
 
-const timerPollNdiController = (instance: InstanceSkel<DeviceConfig>) : NodeJS.Timeout => {
+const timerPollNdiController = (instance: InstanceSkel<DeviceConfig>): NodeJS.Timeout => {
 	return setInterval(() => {
 		axios
 			.get(`http://${NDIurl}:${NDIport}/state`)
@@ -57,8 +57,7 @@ const timerPollNdiController = (instance: InstanceSkel<DeviceConfig>) : NodeJS.T
 }
 
 export const setMtxConnection = (source: number, target: number): void => {
-	axios.post(`http://${NDIurl}:${NDIport}/setmatrix?source=${source}&target=${target}`)
-	.catch(() => {
+	axios.post(`http://${NDIurl}:${NDIport}/setmatrix?source=${source}&target=${target}`).catch(() => {
 		console.log('info', 'Problem sending data to NDI Controller')
 	})
 }

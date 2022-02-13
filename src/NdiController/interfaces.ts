@@ -18,4 +18,3 @@ export interface IConnection {
 	status: 0 | 1 | 2 | null
 	timerInstance?: NodeJS.Timeout
 }
-

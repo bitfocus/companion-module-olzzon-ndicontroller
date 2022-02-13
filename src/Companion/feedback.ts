@@ -24,8 +24,8 @@ export function GetFeedbacksList(instance: InstanceSkel<DeviceConfig>): Companio
 
 	const buttonState = (feedback: CompanionFeedbackEvent): boolean => {
 		//console.log('Feedback buttonState', feedback)
-		let trgNumber: number = feedback.options.trgNumber as number 
-		const selectedsource: number = NDIState.targets[trgNumber - 1].selectedSource as number + 1
+		const trgNumber: number = feedback.options.trgNumber as number
+		const selectedsource: number = (NDIState.targets[trgNumber - 1].selectedSource as number) + 1
 		if (feedback.options.srcNumber === selectedsource) {
 			feedback.options.active = true
 		} else {
@@ -39,29 +39,30 @@ export function GetFeedbacksList(instance: InstanceSkel<DeviceConfig>): Companio
 			type: 'boolean',
 			label: 'Source status and label',
 			description: 'Source Label and status',
-			options: [{
-				type: 'checkbox',
-				id: 'active',
-				label: 'Source Active',
-				default: true,
-			},
-			{
-				type: 'number',
-				id: 'srcNumber',
-				label: 'Source Number',
-				min: 1,
-				max: 100,
-				default: 1
-			},
-			{
-				type: 'number',
-				id: 'trgNumber',
-				label: 'Target Number',
-				min: 1,
-				max: 100,
-				default: 1
-			},
-		],
+			options: [
+				{
+					type: 'checkbox',
+					id: 'active',
+					label: 'Source Active',
+					default: true,
+				},
+				{
+					type: 'number',
+					id: 'srcNumber',
+					label: 'Source Number',
+					min: 1,
+					max: 100,
+					default: 1,
+				},
+				{
+					type: 'number',
+					id: 'trgNumber',
+					label: 'Target Number',
+					min: 1,
+					max: 100,
+					default: 1,
+				},
+			],
 			style: SELECT_STYLE,
 			callback: (feedback): boolean => buttonState(feedback),
 		},
