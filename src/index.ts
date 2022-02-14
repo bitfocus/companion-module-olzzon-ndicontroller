@@ -7,7 +7,7 @@ import { IConnection } from './NdiController/interfaces'
 import { initializeNdiControllerWatcher } from './NdiController/ndiControllerClient'
 
 class ControllerInstance extends InstanceSkel<DeviceConfig> {
-	connection: IConnection = {status: null }
+	connection: IConnection = { status: null }
 
 	constructor(system: CompanionSystem, id: string, config: DeviceConfig) {
 		super(system, id, config)
@@ -36,7 +36,9 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 		if (this.connection.timerInstance) {
 			clearInterval(this.connection.timerInstance)
 		}
-		this.tryConnect()
+		this.tryConnect().catch(() => {
+			this.log('error', 'Error connecting to NDI Controller')
+		})
 	}
 
 	/**
@@ -52,15 +54,17 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 	public destroy(): void {
 		try {
 			console.log('Closing down')
+			if (this.connection.timerInstance) {
+				clearInterval(this.connection.timerInstance)
+			}
+			this.debug('destroy', this.id)
+			this.connection.status = this.STATUS_UNKNOWN
+			this.status(this.connection.status)
 		} catch (e) {
-			// Ignore
+			this.log('error', 'Error cleaning up olzzon-ndicontroller module')
+			this.connection.status = this.STATUS_ERROR
+			this.status(this.connection.status)
 		}
-		if (this.connection.timerInstance) {
-			clearInterval(this.connection.timerInstance)
-		}
-		this.debug('destroy', this.id)
-		this.connection.status = this.STATUS_UNKNOWN
-		this.status(this.connection.status)
 	}
 
 	private async tryConnect(): Promise<void> {
