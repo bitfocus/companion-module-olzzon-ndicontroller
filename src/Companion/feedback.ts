@@ -26,12 +26,7 @@ export function GetFeedbacksList(instance: InstanceSkel<DeviceConfig>): Companio
 		//console.log('Feedback buttonState', feedback)
 		const trgNumber: number = feedback.options.trgNumber as number
 		const selectedsource: number = (NDIState.targets[trgNumber - 1].selectedSource as number) + 1
-		if (feedback.options.srcNumber === selectedsource) {
-			feedback.options.active = true
-		} else {
-			feedback.options.active = false
-		}
-		return feedback.options.active ? true : false
+		return feedback.options.srcNumber === selectedsource
 	}
 
 	const feedbacks: { [id in FeedbackId]: CompanionFeedbackWithCallback | undefined } = {
