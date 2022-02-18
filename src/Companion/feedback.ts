@@ -1,4 +1,4 @@
-import { NDIState } from '../NdiController/ndiControllerClient'
+import { NdiControllerConnection } from '../NdiController/ndiControllerClient'
 import { SetRequired } from 'type-fest'
 import InstanceSkel = require('../../../../instance_skel')
 import {
@@ -16,7 +16,7 @@ export enum FeedbackId {
 
 type CompanionFeedbackWithCallback = SetRequired<CompanionFeedbackBoolean, 'callback'>
 
-export function GetFeedbacksList(instance: InstanceSkel<DeviceConfig>): CompanionFeedbacks {
+export function GetFeedbacksList(instance: InstanceSkel<DeviceConfig>, ndiConnection: NdiControllerConnection): CompanionFeedbacks {
 	const SELECT_STYLE: Partial<CompanionBankRequiredProps & CompanionBankAdditionalStyleProps> = {
 		color: instance.rgb(100, 100, 100),
 		bgcolor: instance.rgb(0, 255, 0),
@@ -25,7 +25,7 @@ export function GetFeedbacksList(instance: InstanceSkel<DeviceConfig>): Companio
 	const buttonState = (feedback: CompanionFeedbackEvent): boolean => {
 		//console.log('Feedback buttonState', feedback)
 		const trgNumber: number = feedback.options.trgNumber as number
-		const selectedsource: number = (NDIState.targets[trgNumber - 1].selectedSource as number) + 1
+		const selectedsource: number = (ndiConnection.getNdiTarget(trgNumber - 1).selectedSource as number) + 1
 		return feedback.options.srcNumber === selectedsource
 	}
 

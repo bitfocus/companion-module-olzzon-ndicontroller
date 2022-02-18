@@ -3,15 +3,14 @@ import { CompanionConfigField, CompanionSystem } from '../../../instance_skel_ty
 import { GetActionsList } from './Companion/actions'
 import { DeviceConfig, GetConfigFields } from './Companion/config'
 import { GetFeedbacksList } from './Companion/feedback'
-import { IConnection } from './NdiController/interfaces'
-import { initializeNdiControllerWatcher } from './NdiController/ndiControllerClient'
+import { NdiControllerConnection } from './NdiController/ndiControllerClient'
 
 class ControllerInstance extends InstanceSkel<DeviceConfig> {
-	connection: IConnection = { status: null }
+	ndiConnection: NdiControllerConnection
 
 	constructor(system: CompanionSystem, id: string, config: DeviceConfig) {
 		super(system, id, config)
-		this.connection.status = this.STATUS_UNKNOWN
+		this.ndiConnection = new NdiControllerConnection(this)
 	}
 
 	/**
@@ -22,8 +21,8 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 		this.status(this.STATUS_UNKNOWN)
 		this.updateConfig(this.config)
 
-		this.setFeedbackDefinitions(GetFeedbacksList(this))
-		this.setActions(GetActionsList())
+		this.setFeedbackDefinitions(GetFeedbacksList(this, this.ndiConnection))
+		this.setActions(GetActionsList(this.ndiConnection))
 
 		this.checkFeedbacks()
 	}
@@ -33,9 +32,7 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 	 */
 	public updateConfig(config: DeviceConfig): void {
 		this.config = config
-		if (this.connection.timerInstance) {
-			clearInterval(this.connection.timerInstance)
-		}
+		this.ndiConnection.destroy()
 		this.tryConnect().catch(() => {
 			this.log('error', 'Error connecting to NDI Controller')
 		})
@@ -54,25 +51,17 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 	public destroy(): void {
 		try {
 			console.log('Closing down')
-			if (this.connection.timerInstance) {
-				clearInterval(this.connection.timerInstance)
-			}
+			this.ndiConnection.destroy()
 			this.debug('destroy', this.id)
-			this.connection.status = this.STATUS_UNKNOWN
-			this.status(this.connection.status)
+			this.status(this.STATUS_UNKNOWN)
 		} catch (e) {
 			this.log('error', 'Error cleaning up olzzon-ndicontroller module')
-			this.connection.status = this.STATUS_ERROR
-			this.status(this.connection.status)
+			this.status(this.STATUS_ERROR)
 		}
 	}
 
 	private async tryConnect(): Promise<void> {
-		if (this.connection.status === this.STATUS_OK) {
-			return
-		}
-		this.connection = await initializeNdiControllerWatcher(this)
-		this.status(this.connection.status)
+		this.ndiConnection.initialize()
 	}
 }
 

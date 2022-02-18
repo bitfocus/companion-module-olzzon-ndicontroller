@@ -1,4 +1,4 @@
-import { setMtxConnection } from '../NdiController/ndiControllerClient'
+import { NdiControllerConnection } from '../NdiController/ndiControllerClient'
 import { CompanionActionEvent, CompanionActions, CompanionAction } from '../../../../instance_skel_types'
 
 export enum ActionId {
@@ -7,11 +7,11 @@ export enum ActionId {
 
 type CompanionActionWithCallback = CompanionAction & Required<Pick<CompanionAction, 'callback'>>
 
-export function GetActionsList(): CompanionActions {
+export function GetActionsList(ndiConnection: NdiControllerConnection): CompanionActions {
 	const entityOnOff = (opt: CompanionActionEvent['options']): void => {
 		const srcNumber = parseInt(opt.srcNumber as string)
 		const trgNumber = parseInt(opt.trgNumber as string)
-		setMtxConnection(srcNumber, trgNumber)
+		ndiConnection.setMtxConnection(srcNumber, trgNumber)
 	}
 
 	const actions: { [id in ActionId]: CompanionActionWithCallback | undefined } = {
