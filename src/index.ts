@@ -33,9 +33,7 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 	public updateConfig(config: DeviceConfig): void {
 		this.config = config
 		this.ndiConnection.destroy()
-		this.tryConnect().catch(() => {
-			this.log('error', 'Error connecting to NDI Controller')
-		})
+		this.ndiConnection.initialize()
 	}
 
 	/**
@@ -50,7 +48,7 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 	 */
 	public destroy(): void {
 		try {
-			console.log('Closing down')
+			console.log('Closing down NDI Controller connection')
 			this.ndiConnection.destroy()
 			this.debug('destroy', this.id)
 			this.status(this.STATUS_UNKNOWN)
@@ -58,10 +56,6 @@ class ControllerInstance extends InstanceSkel<DeviceConfig> {
 			this.log('error', 'Error cleaning up olzzon-ndicontroller module')
 			this.status(this.STATUS_ERROR)
 		}
-	}
-
-	private async tryConnect(): Promise<void> {
-		this.ndiConnection.initialize()
 	}
 }
 
