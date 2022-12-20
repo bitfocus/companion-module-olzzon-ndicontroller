@@ -29,7 +29,7 @@
 		]
 	},
 	"engines": {
-		"node": "^14 || ^16"
+		"node": "^14 || ^16 || ^18"
 	},
 	"devDependencies": {
 		"@sofie-automation/code-standard-preset": "^1.1.0",
