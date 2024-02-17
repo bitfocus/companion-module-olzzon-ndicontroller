@@ -15,7 +15,7 @@
 	"scripts": {
 		"build:main": "tsc -p tsconfig.build.json",
 		"build:watch": "tsc -p tsconfig.build.json --watch",
-		"build": "npx rimraf dist && npx --package=typescript@~4.5 -c 'tsc -p tsconfig.build.json'",
+		"build": "npx rimraf dist && npx --package=typescript@~4.5 -c \"tsc -p tsconfig.build.json\"",
 		"license-validate": "yarn sofie-licensecheck",
 		"postinstall": "yarn build"
 	},
